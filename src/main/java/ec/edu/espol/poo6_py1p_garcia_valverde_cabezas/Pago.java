@@ -12,6 +12,43 @@ package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 public class Pago {
     private int totalPagar;
     private Cliente cliente;
-    //private Servicio servicio;
+    private Servicio servicio;
+
+    public Pago(int totalPagar, Cliente cliente, Servicio servicio) {
+        this.totalPagar = totalPagar;
+        this.cliente = cliente;
+        this.servicio = servicio;
+    }
+
+    public int getTotalPagar() {
+        return totalPagar;
+    }
+
+    public void setTotalPagar(int totalPagar) {
+        this.totalPagar = totalPagar;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Servicio getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
+    @Override
+    public String toString() {
+        return "Pago{" + "totalPagar=" + totalPagar + ", cliente=" + cliente + ", servicio=" + servicio + '}';
+    }
+    
+    
     
 }
