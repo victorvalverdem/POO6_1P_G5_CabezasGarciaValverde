@@ -1,0 +1,9 @@
+codigoVehiculo,placa,modelo,marca,tipo
+23,GSX3847,CX3,Mazda,A
+12,GSD8475,Aveo,Chevrolet,A
+15,GAF9833,I10,Hyundai,A
+75,GSD4555,I11,Chevrolet,M
+45,GED7456,I13,Mazda,M
+14,GTY4695,Guzzi,Suzzuki,A
+20,GOU7569,Scooter,Corven,M
+17,GYH5486,Enduro,Corven,A

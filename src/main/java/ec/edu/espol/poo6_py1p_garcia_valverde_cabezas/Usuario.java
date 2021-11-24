@@ -5,16 +5,19 @@
  */
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
+import ec.edu.espol.util.Util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -138,9 +141,10 @@ public class Usuario {
         return lineas;
 
     }
+    
+    
 
-        
-    public static void EscribirArchivo(String nombreArchivo, String linea) {
+    public static void EscribirArchivo(String nombreArchivo, Usuario u) {
 
         FileWriter fichero = null;
         BufferedWriter bw = null;
@@ -148,8 +152,8 @@ public class Usuario {
         try {
             fichero = new FileWriter(nombreArchivo,true);
             bw = new BufferedWriter(fichero);
-            bw.write(linea+"\n");
-            System.out.println("ksdsdlsd");
+            bw.write(u+"\n");
+            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,13 +170,97 @@ public class Usuario {
             }
         }
     }
-
-
-    @Override
-    public String toString() {
-        return "Usuario{" + "numeroCedula=" + numeroCedula + ", nombre=" + nombre + ", apellido=" + apellido + ", usuario=" + usuario + ", contrasena=" + contrasena + ", celular=" + celular + ", tipoUsuario=" + tipoUsuario + '}';
+    
+    
+    public static String TipoDeUsuario(ArrayList<Usuario> usuario, String user)
+    {
+        for(Usuario u : usuario)
+        {
+            if(u.getUsuario().equals(user))
+                return u.getTipoUsuario();
+        }
+        return null;
     }
     
+    public static boolean ValidarUsuario(String usuIngr, String passw, ArrayList<Usuario> usu){
+        for(Usuario u:usu){
+            if(usuIngr.equals(u.getUsuario()) && passw.equals(u.getContrasena()))
+                return true;
+        }
+        return false;
+    }
+ 
+    
+    public static void MenuUsuario(Scanner sc, String nomfile, ArrayList<Usuario> usuar){//ingresa un usuario al .txt
+        System.out.println("Ingrese numero de cedula: ");
+        String numCedula=sc.next();
+        System.out.println("Nombre: ");
+        String nombre=sc.next();
+        System.out.println("Apellido: ");
+        String apellido=sc.next();
+        System.out.println("user: ");
+        String user=sc.next();
+        System.out.println("Contrasena: ");
+        String password=sc.next();
+        System.out.println("Celular: ");
+        String celular=sc.next();
+        System.out.println("TipoUsuario(C/R)");
+        String tipUsuario=sc.next();
+        Usuario usuario=new Usuario(numCedula, nombre, apellido, user, password,celular,tipUsuario);
+        boolean validarCedula=false;
+        if(usuar.isEmpty()){
+            Usuario.EscribirArchivo(nomfile, usuario);
+            System.out.println("Usuario Registrado");
+        }
+        else{
+            for(Usuario u:usuar){
+                if(!(u.getNumeroCedula().equals(numCedula))){
+                    validarCedula=true;
+                }
+            }
+            if(validarCedula ==true){
+                Usuario.EscribirArchivo(nomfile, usuario);
+                System.out.println("***USUARIO REGISTRADO***");
+            }
+            else
+                System.out.println("Numero de cedula repetido, no se puede ingresar");
+            
+        }
+        
+    }
+    
+    public static void IniciarSesion(Scanner sc, ArrayList<Usuario> usuario){
+        System.out.println("USUARIO: ");
+        String usu = sc.next();
+        System.out.println("Contrasena: ");
+        String contr = sc.next();
+        int opcion;
+        if (Usuario.ValidarUsuario(usu, contr, usuario) == true) {
+            System.out.println("Ingreso Exitoso!");
+            if (Usuario.TipoDeUsuario(usuario, usu).equals("C")) {
+                do{
+                    opcion=Util.MenuCliente(sc);
+                    switch(opcion){
+                        case 1:
+                    
+                    }while(opcion!=5);//salir
+                
+                
+                
+                }
+                
+            }
+            else{
+                Util.MenuConductor(sc);
+            }
+        } 
+    }
+    
+    
+    @Override
+    public String toString() {
+        return numeroCedula +","+ nombre +","+ apellido +","+ usuario +","+ contrasena +","+ celular +","+ tipoUsuario;
+    }
     
     
 }

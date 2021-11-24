@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
+import ec.edu.espol.util.Util;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -23,17 +24,49 @@ public class NewMain {
         
         // TODO code application logic here
         ArrayList<Usuario> usuario=Usuario.LeeFichero("usuarios.txt");
-       
-        
+        ArrayList<String> cliente=Cliente.LeeFicheroCliente("clientes.txt");
+        Cliente.LeeFicheroCliente("clientes.txt");
+        int opcion;
         Scanner sc=new Scanner(System.in);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         System.out.println("                   BIENVENIDOS AL SISTEMA                  ");
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("USUARIO: ");
-        String usu=sc.next();
+        System.out.println("1. Iniciar Sesion");
+        System.out.println("2. Registrar nuevo Usuario");
+        System.out.println("3. Salir");
+        System.out.println("Elija una opcion: ");
+        int eleccion=sc.nextInt();
+        int nuevaOpcion;
+        int otraOpcion;
+        switch(eleccion){
+            case 1:
+            {
+                do{
+                    Usuario.IniciarSesion(sc, usuario);
+                    
+                    
+                }
+                    
+                    
+                }
+            
+            
+            }
+            
+        }while(eleccion!=3);
         
         
         
-    }
+        
+        
+        
+        
+        
+            
+        }
+        else
+            
+        
+        
     
 }
