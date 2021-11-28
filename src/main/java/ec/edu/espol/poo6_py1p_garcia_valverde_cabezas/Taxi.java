@@ -30,6 +30,8 @@ public class Taxi extends Servicio{
         this.numeroPersona = numeroPersona;
     }
     
+    // Método de cálculo servicio debe ir en el padre, porwue se hereda a los servicios hijos
+    /*
     public static double valorPagar(TipoPago p){
         double numAle=Math.random()*100;
         if(p.equals(p.TARJETACREDITO)){
@@ -39,7 +41,7 @@ public class Taxi extends Servicio{
         else
             return numAle;
     }
-    
+    */
     public static void ServicioTaxi(Scanner sc, String nomfile, ArrayList<Taxi> taxi){
         //String tp;
         System.out.println("****BIENVENIDO AL SERVICIO DE TAXI****");

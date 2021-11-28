@@ -7,11 +7,13 @@ package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.lang.Math;
 
 /**
  *
  * @author USER
  */
+ // Clase abstracta?
 public class Servicio {
     protected int idServicio;
     protected Ruta ruta;
@@ -77,6 +79,35 @@ public class Servicio {
     public void setTipopago(TipoPago tipopago) {
         this.tipopago = tipopago;
     }
+
+    public double calcularPrecioServicio()
+    {
+      int min = 1;
+      int max = 10;
+      double precio = Math.random()*(max-min+1)+min;
+      return precio;
+  }
+
+  // Aquí la sobrecarga; invocación del adecuado se da en la condicional del menú
+  
+  public double calcularPrecioServicio(TipoPago tipopago)
+    {
+      double precio_base = calcularPrecioServicio();
+      double precio_final = precio_base + (precio_base*10)/100;
+      return precio_final;
+    }
+
+    /* Métodos anteriores de calcularPrecio Stephany
+    public static double valorPagar(TipoPago p){
+        double numAle=Math.random()*100;
+        if(p.equals(p.TARJETACREDITO)){
+            double aumen=numAle+(numAle*0.10);
+            return aumen;
+        }
+        else
+            return numAle;
+    */
+    
     /*
     public static void IngresoServicio(Scanner sc, String nomfile){
         System.out.println("****BIENVENIDO AL SERVICIO DE TAXI****");
