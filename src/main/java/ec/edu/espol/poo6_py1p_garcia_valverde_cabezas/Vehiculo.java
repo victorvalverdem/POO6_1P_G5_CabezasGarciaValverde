@@ -7,9 +7,12 @@ package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -69,11 +72,45 @@ public class Vehiculo {
     public void setTipoVeh(TipoVehiculo tipoVeh) {
         this.tipoVeh = tipoVeh;
     }
+    
+    public void saveFileVehiculo(String nomfile){
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile),true)))
+        {
+            pw.println(this.codigoVehiculo+","+this.placa+","+this.modelo+","+this.marca+","+this.tipoVeh);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+ 
+    public static ArrayList<Vehiculo> readFileVehiculotxt(String nomfile){
+        ArrayList<Vehiculo> ListaVe = new ArrayList<>();
+        try(Scanner sc=new Scanner(new File(nomfile))){
+            while(sc.hasNextLine()){
+                //linea = "091656,21,null"
+                String linea=sc.nextLine();
+                
+                String[] tokens=linea.split(",");
+                String dato=tokens[4];
+                TipoVehiculo tpV=TipoVehiculo.valueOf(dato);                
+                Vehiculo c=new Vehiculo(Integer.parseInt(tokens[0]),tokens[1],tokens[2],tokens[3],tpV);
+                ListaVe.add(c);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
+        return ListaVe;
+    }
+    
+    public static void MenuVehiculo(Scanner sc){
+        
+    } 
 
     @Override
     public String toString() {
         return "Vehiculo{" + "placa=" + placa + ", modelo=" + modelo + ", marca=" + marca + ", tipoVeh=" + tipoVeh + '}';
     }   
+    /*
     public static ArrayList<Vehiculo> LeeFichero(String nombrearchivo) {
         ArrayList<Vehiculo> lineas = new ArrayList<>();
         File archivo = null;
@@ -115,7 +152,7 @@ public class Vehiculo {
             }
         }
         return lineas;
-    }
+    }*/
     
     
 }

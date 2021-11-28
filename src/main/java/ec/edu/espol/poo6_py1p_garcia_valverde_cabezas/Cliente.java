@@ -8,11 +8,17 @@ package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,17 +27,19 @@ import java.util.ArrayList;
 public class Cliente extends Usuario{
     private String numeroTarjeta;
     private int edad;
-    private Pago pago;
 
-    
-    public Cliente(String numeroTarjeta, int edad, Pago pago, String numeroCedula, String nombre, String apellido, String usuario, String contrasena, String celular, String tipoUsuario) {
+    public Cliente(String numeroCedula, String nombre, String apellido, String usuario, String contrasena, String celular, String tipoUsuario,String numeroTarjeta, int Edad) {
         super(numeroCedula, nombre, apellido, usuario, contrasena, celular, tipoUsuario);
-        this.numeroTarjeta = numeroTarjeta;
-        this.edad = edad;
-        this.pago = pago;
+        this.numeroTarjeta=numeroTarjeta;
+        this.edad=Edad;
     }
     
-
+    public Cliente(String numeroCedula,String numeroTarjeta,int edad){
+        super(numeroCedula);
+        this.numeroTarjeta=numeroTarjeta;
+        this.edad=edad;
+        }
+    
     public String getNumeroTarjeta() {
         return numeroTarjeta;
     }
@@ -48,79 +56,86 @@ public class Cliente extends Usuario{
         this.edad = edad;
     }
 
-    public Pago getPago() {
-        return pago;
-    }
 
-    public void setPago(Pago pago) {
-        this.pago = pago;
-    }
     
-    public static void EscribirArchivo(String nombreArchivo, String linea) {
-
-        FileWriter fichero = null;
-        BufferedWriter bw = null;
-        PrintWriter pw = null;
-        try {
-            fichero = new FileWriter(nombreArchivo,true);
-            bw = new BufferedWriter(fichero);
-            bw.write(linea+"\n");
-            System.out.println("ksdsdlsd");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                // Nuevamente aprovechamos el finally para 
-                // asegurarnos que se cierra el fichero.
-                if (null != fichero) {
-                    //fichero.close();
-                    bw.close();
-                }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+    
+    public void saveFileCliente(String nomfile){
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile),true)))
+        {
+            pw.println(super.getNumeroCedula()+","+this.edad+","+this.numeroTarjeta);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+ 
+    public static ArrayList<Cliente> readFileClientestxt(String nomfile){
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        try(Scanner sc=new Scanner(new File(nomfile))){
+            while(sc.hasNextLine()){
+                //linea = "091656,21,null"
+                String linea=sc.nextLine();
+                
+                String[] tokens=linea.split(",");
+                
+                Cliente c=new Cliente(tokens[0],tokens[1],Integer.parseInt(tokens[2]));
+                clientes.add(c);
             }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
+        return clientes;
+    }
+  
+    
+
+    public static void MenuClienteNuevo(Scanner sc, ArrayList<Cliente> clientes){//ingresa un usuario al .txt
+        ArrayList<Cliente> cadena=new ArrayList<>();
+        System.out.println("Ingrese numero de cedula: ");
+        String cedula=sc.next();
+        System.out.println("Nombre: ");
+        String nombre=sc.next();
+        System.out.println("Apellido: ");
+        String apellido=sc.next();
+        System.out.println("Edad: ");
+        int edad=sc.nextInt();
+        System.out.println("user: ");
+        String user=sc.next();
+        System.out.println("Contrasena: ");
+        String password=sc.next();
+        System.out.println("Celular: ");
+        String celular=sc.next();
+        System.out.println("TipoUsuario(C/R)");
+        String tipUsuario=sc.next();        
+        System.out.println("Numero Tarjeta de Credito: ");
+        String tarC=sc.next();
+        Cliente c=new Cliente(cedula, nombre, apellido, user, password, celular, tipUsuario,tarC,edad);
+        
+        if(clientes.isEmpty()){
+            c.saveFileCliente("clientes.txt");
+            c.saveFile("usuario.txt");
+            System.out.println("Ingreso de Cliente Exitoso");
+            //Cliente.EscribirArchivoCliente("usuario.txt",c );
+            //ManejoArchivos.EscribirArchivo("clientes.txt",cedula+","+edad+","+tarC);
+            //ManejoArchivos.EscribirArchivo("usuario.txt", cedula+","+ nombre+","+ apellido+","+ user+","+ password+","+ celular+","+ tipUsuario);
+        }
+        ArrayList<String> numerosdeCedulas=new ArrayList<>();
+        for (Cliente clien:clientes){
+            if(!numerosdeCedulas.contains(clien.getNumeroCedula())){
+                numerosdeCedulas.add(clien.getNumeroCedula());
+            }
+        }
+        if(numerosdeCedulas.contains(cedula)){
+            System.out.println("Cliente existente");
+        }
+        else{
+            cadena.add(c);
+            c.saveFileCliente("clientes.txt");
+            c.saveFile("usuario.txt");
+            System.out.println("Ingreso de Cliente Exitoso");
         }
     }
     
-    public static ArrayList<String> LeeFicheroCliente(String nombrearchivo) {
-        ArrayList<String> lineas = new ArrayList<>();
-        File archivo = null;
-        FileReader fr = null;
-        BufferedReader br = null;
-
-        try {
-            // Apertura del fichero y creacion de BufferedReader para poder
-            // hacer una lectura comoda (disponer del metodo readLine()).
-            archivo = new File(nombrearchivo);
-            fr = new FileReader(archivo,StandardCharsets.UTF_8);
-            br = new BufferedReader(fr);
-
-            // Lectura del fichero
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                System.out.println(linea);
-                lineas.add(linea);
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // En el finally cerramos el fichero, para asegurarnos
-            // que se cierra tanto si todo va bien como si salta 
-            // una excepcion.
-            try {
-                if (null != fr) {
-                    fr.close();
-                }
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
-        }
-        return lineas;
-
-    }
     
     
     public static boolean buscarxCedula(ArrayList<String> arreglo, String u){
@@ -131,6 +146,13 @@ public class Cliente extends Usuario{
         }
         return false;
         
+    }
+    
+    
+    
+    
+    public String toString(){
+        return "Cliente = {"+this.numeroCedula+","+this.numeroTarjeta+","+this.edad+"} ";
     }
     
 }

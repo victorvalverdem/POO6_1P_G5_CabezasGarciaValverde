@@ -23,9 +23,8 @@ public class NewMain {
     public static void main(String[] args) {
         
         // TODO code application logic here
-        ArrayList<Usuario> usuario=Usuario.LeeFichero("usuarios.txt");
-        ArrayList<String> cliente=Cliente.LeeFicheroCliente("clientes.txt");
-        Cliente.LeeFicheroCliente("clientes.txt");
+        ArrayList<String> usuario=Usuario.LeeFicheroUsuario("usuarios.txt");
+        ArrayList<Cliente> cliente=Cliente.readFileClientestxt("clientes.txt");
         int opcion;
         Scanner sc=new Scanner(System.in);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -42,7 +41,7 @@ public class NewMain {
             case 1:
             {
                 do{
-                    Usuario.IniciarSesion(sc, usuario);
+                    
                     
                     
                 }

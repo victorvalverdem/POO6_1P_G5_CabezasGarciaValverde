@@ -5,7 +5,7 @@
  */
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
-import ec.edu.espol.util.Util;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  *
  * @author USER
  */
-public class Usuario {
+public abstract class Usuario {
     protected String numeroCedula;
     protected String nombre;
     protected String apellido;
@@ -34,7 +34,7 @@ public class Usuario {
     protected String celular;
     protected String tipoUsuario;
 
-    public Usuario(String numeroCedula, String nombre, String apellido, String usuario, String contrasena, String celular, String tipoUsuario) {
+    public Usuario(String numeroCedula, String nombre, String apellido,String usuario, String contrasena, String celular, String tipoUsuario) {
         this.numeroCedula = numeroCedula;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -42,6 +42,13 @@ public class Usuario {
         this.contrasena = contrasena;
         this.celular = celular;
         this.tipoUsuario = tipoUsuario;
+                
+    }
+    
+    public Usuario(String numCedula){
+        this.numeroCedula=numCedula;
+        
+        
     }
 
     public String getNumeroCedula() {
@@ -67,6 +74,8 @@ public class Usuario {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+    
+    
 
     public String getUsuario() {
         return usuario;
@@ -100,8 +109,8 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
     
-    public static ArrayList<Usuario> LeeFichero(String nombrearchivo) {
-        ArrayList<Usuario> lineas = new ArrayList<>();
+    public static ArrayList<String> LeeFicheroUsuario(String nombrearchivo) {
+        ArrayList<String> lineas = new ArrayList<>();
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;
@@ -115,14 +124,11 @@ public class Usuario {
 
             // Lectura del fichero
             String linea;
-            br.readLine();
             while ((linea = br.readLine()) != null) {
                 System.out.println(linea);
-                String[] datos=linea.split(",");
-                Usuario u=new Usuario(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6]);
-                lineas.add(u);
+                lineas.add(linea);
+
             }
-            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,36 +147,10 @@ public class Usuario {
         return lineas;
 
     }
+
     
     
-
-    public static void EscribirArchivo(String nombreArchivo, Usuario u) {
-
-        FileWriter fichero = null;
-        BufferedWriter bw = null;
-        PrintWriter pw = null;
-        try {
-            fichero = new FileWriter(nombreArchivo,true);
-            bw = new BufferedWriter(fichero);
-            bw.write(u+"\n");
-            
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                // Nuevamente aprovechamos el finally para 
-                // asegurarnos que se cierra el fichero.
-                if (null != fichero) {
-                    //fichero.close();
-                    bw.close();
-                }
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
-        }
-    }
-    
+    /*
     
     public static String TipoDeUsuario(ArrayList<Usuario> usuario, String user)
     {
@@ -182,85 +162,46 @@ public class Usuario {
         return null;
     }
     
-    public static boolean ValidarUsuario(String usuIngr, String passw, ArrayList<Usuario> usu){
+    public static boolean ValidarUsuario(String usuIngr, String passw, ArrayList<String> usu){
         for(Usuario u:usu){
             if(usuIngr.equals(u.getUsuario()) && passw.equals(u.getContrasena()))
                 return true;
         }
         return false;
-    }
+    }*/
  
     
-    public static void MenuUsuario(Scanner sc, String nomfile, ArrayList<Usuario> usuar){//ingresa un usuario al .txt
-        System.out.println("Ingrese numero de cedula: ");
-        String numCedula=sc.next();
-        System.out.println("Nombre: ");
-        String nombre=sc.next();
-        System.out.println("Apellido: ");
-        String apellido=sc.next();
-        System.out.println("user: ");
-        String user=sc.next();
-        System.out.println("Contrasena: ");
-        String password=sc.next();
-        System.out.println("Celular: ");
-        String celular=sc.next();
-        System.out.println("TipoUsuario(C/R)");
-        String tipUsuario=sc.next();
-        Usuario usuario=new Usuario(numCedula, nombre, apellido, user, password,celular,tipUsuario);
-        boolean validarCedula=false;
-        if(usuar.isEmpty()){
-            Usuario.EscribirArchivo(nomfile, usuario);
-            System.out.println("Usuario Registrado");
-        }
-        else{
-            for(Usuario u:usuar){
-                if(!(u.getNumeroCedula().equals(numCedula))){
-                    validarCedula=true;
-                }
-            }
-            if(validarCedula ==true){
-                Usuario.EscribirArchivo(nomfile, usuario);
-                System.out.println("***USUARIO REGISTRADO***");
-            }
-            else
-                System.out.println("Numero de cedula repetido, no se puede ingresar");
-            
-        }
-        
-    }
     
-    public static void IniciarSesion(Scanner sc, ArrayList<Usuario> usuario){
-        System.out.println("USUARIO: ");
-        String usu = sc.next();
-        System.out.println("Contrasena: ");
-        String contr = sc.next();
-        int opcion;
-        if (Usuario.ValidarUsuario(usu, contr, usuario) == true) {
-            System.out.println("Ingreso Exitoso!");
-            if (Usuario.TipoDeUsuario(usuario, usu).equals("C")) {
-                do{
-                    opcion=Util.MenuCliente(sc);
-                    switch(opcion){
-                        case 1:
-                    
-                    }while(opcion!=5);//salir
-                
-                
-                
-                }
-                
-            }
-            else{
-                Util.MenuConductor(sc);
-            }
-        } 
+    public void saveFile(String nomfile){
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile),true)))
+        {
+            pw.println(this.numeroCedula+","+this.nombre+","+this.apellido+","+this.usuario+","+this.contrasena+","+this.celular+","+this.tipoUsuario);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
-    
+    public boolean equals(Object o){
+       
+        if(this==o){
+            return true;
+        }
+        if(o!=null && this.getClass()!=o.getClass()){
+            Usuario otro=(Usuario) o;
+            return this.numeroCedula==otro.numeroCedula;
+        }
+        else
+            return false;
+              
+    }
     
     @Override
     public String toString() {
-        return numeroCedula +","+ nombre +","+ apellido +","+ usuario +","+ contrasena +","+ celular +","+ tipoUsuario;
+        return "Usuario ={ "+numeroCedula +","+ nombre +","+ apellido +","+ usuario +","+ contrasena +","+ celular +","+ tipoUsuario
+                +"} ";
     }
+    
+    
     
     
 }
