@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.util;
 
+import ec.edu.espol.poo6_py1p_garcia_valverde_cabezas.Usuario;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -49,6 +50,34 @@ public class Util {
         int opcion=sc.nextInt();
         return opcion;
     }
+    
+    public static boolean ValidarUsuario(Scanner sc){
+        ArrayList<String> usuarios=Usuario.LeeFicheroUsuario("usuarios.txt");
+        System.out.println("****************INICIO DE SESION******************");
+        System.out.println("\n");
+        System.out.println("Ingresar Usuario: ");
+        String user=sc.next();
+        System.out.println("Ingresar Contraseña: ");
+        String contrasena=sc.next();
+        boolean i = false;
+        for(String u: usuarios){
+            String[] datos=u.split(",");
+            if((datos[3].equals(user)) && (datos[4].equals(contrasena))){
+                System.out.println("Ingreso correctamente");
+                i=true;
+                //cedula,nombre,apellido,user,contrasena,celular,tipoUsuario
+                if()
+            }
+            else{
+                System.out.println("Datos incorrectos");
+                i=false;
+            }
+        }
+        return i;
+
+        
+    }
+    
     
     
     

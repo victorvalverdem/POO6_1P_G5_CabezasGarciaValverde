@@ -5,6 +5,7 @@
  */
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
+import ec.edu.espol.util.Util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -102,14 +103,25 @@ public class Vehiculo {
         return ListaVe;
     }
     
-    public static void MenuVehiculo(Scanner sc){
+    public static Vehiculo MenuVehiculo(Scanner sc){
+        ArrayList<Vehiculo> ListaVehiculo=new ArrayList<>();
+        int id=Util.GenerarID("vehiculos.txt");
+        System.out.println("Ingrese la placa: ");
+        String placa=sc.next();
+        System.out.println("Ingrese el modelo: ");
+        String modelo=sc.next();
+        System.out.println("Ingrese la marca: ");
+        String marca=sc.next();
+        System.out.println("Ingrese el tipo de Vehiculo(M/A):");
+        String tpo=sc.next();
+        TipoVehiculo tipo=TipoVehiculo.valueOf(tpo);
+        Vehiculo v=new Vehiculo(id, placa, modelo, marca, tipo);
+        v.saveFileVehiculo("vehiculos.txt");
+        return v;
         
     } 
 
-    @Override
-    public String toString() {
-        return "Vehiculo{" + "placa=" + placa + ", modelo=" + modelo + ", marca=" + marca + ", tipoVeh=" + tipoVeh + '}';
-    }   
+      
     /*
     public static ArrayList<Vehiculo> LeeFichero(String nombrearchivo) {
         ArrayList<Vehiculo> lineas = new ArrayList<>();
@@ -153,6 +165,11 @@ public class Vehiculo {
         }
         return lineas;
     }*/
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" + "codigoVehiculo=" + codigoVehiculo + ", placa=" + placa + ", modelo=" + modelo + ", marca=" + marca + ", tipoVeh=" + tipoVeh + '}';
+    }
     
     
 }

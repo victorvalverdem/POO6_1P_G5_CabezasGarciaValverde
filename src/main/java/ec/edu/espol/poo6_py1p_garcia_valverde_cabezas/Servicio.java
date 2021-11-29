@@ -5,9 +5,11 @@
  */
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.lang.Math;
+import java.util.ArrayList;
 
 /**
  *
@@ -87,6 +89,23 @@ public class Servicio {
       double precio = Math.random()*(max-min+1)+min;
       return precio;
   }
+    public static ArrayList<Servicio> readFileClientestxt(String nomfile){
+        ArrayList<Servicio> servicio = new ArrayList<>();
+        try(Scanner sc=new Scanner(new File(nomfile))){
+            while(sc.hasNextLine()){
+                //linea = "091656,21,null"
+                String linea=sc.nextLine();
+                
+                String[] tokens=linea.split(",");
+                
+                Servicio c=new Cliente(tokens[0],tokens[1],Integer.parseInt(tokens[2]));
+                clientes.add(c);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
+        return clientes;
+    }
 
   // Aquí la sobrecarga; invocación del adecuado se da en la condicional del menú
   
@@ -108,20 +127,7 @@ public class Servicio {
             return numAle;
     */
     
-    /*
-    public static void IngresoServicio(Scanner sc, String nomfile){
-        System.out.println("****BIENVENIDO AL SERVICIO DE TAXI****");
-        System.out.println("**Ingrese la ruta**");
-        System.out.println("Desde: ");
-        String desde=sc.next();
-        System.out.println("Hacia: ");
-        String hacia=sc.next();
-        Ruta r=new Ruta(desde, hacia);
-        LocalDate dateActual=LocalDate.now();
-        
     
-    }
-*/
     
     
 }

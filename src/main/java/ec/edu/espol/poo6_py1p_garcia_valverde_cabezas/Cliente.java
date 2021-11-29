@@ -125,10 +125,14 @@ public class Cliente extends Usuario{
                 numerosdeCedulas.add(clien.getNumeroCedula());
             }
         }
-        if(numerosdeCedulas.contains(cedula)){
-            System.out.println("Cliente existente");
+        do{
+        {
+            System.out.println("Cliente existe");
+            Cliente.MenuClienteNuevo(sc, clientes);
+            
         }
-        else{
+        }while(numerosdeCedulas.contains(cedula));
+        if(!numerosdeCedulas.contains(cedula)){
             cadena.add(c);
             c.saveFileCliente("clientes.txt");
             c.saveFile("usuario.txt");

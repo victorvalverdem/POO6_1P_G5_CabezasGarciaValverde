@@ -25,6 +25,8 @@ public class NewMain {
         // TODO code application logic here
         ArrayList<String> usuario=Usuario.LeeFicheroUsuario("usuarios.txt");
         ArrayList<Cliente> cliente=Cliente.readFileClientestxt("clientes.txt");
+        ArrayList<Conductor> conductores=Conductor.readFileConductortxt("conductores.txt");
+        ArrayList<Vehiculo> vehiculos=Vehiculo.readFileVehiculotxt("vehiculos.txt");
         int opcion;
         Scanner sc=new Scanner(System.in);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -37,35 +39,66 @@ public class NewMain {
         int eleccion=sc.nextInt();
         int nuevaOpcion;
         int otraOpcion;
-        switch(eleccion){
-            case 1:
-            {
-                do{
-                    
-                    
-                    
+        int elejir;
+        do{
+            boolean sub_salir= false;
+            switch (eleccion) {
+                case 1: {
+                    boolean validar = Util.ValidarUsuario(sc);
+                    do {
+                        Util.ValidarUsuario(sc);
+                    } while (validar == false);
+                    if(validar==true){
+                        
+                    }
+
                 }
+                case 2:{
                     
-                    
+                    do{
+                        System.out.println("1. Registrar Cliente");
+                        System.out.println("2. Registrar Conductor");
+                        System.out.println("3. Regresar");
+                        System.out.println("Elegir una opcion: ");
+                        elejir = sc.nextInt();
+                        switch (elejir) {
+                            case 1: {
+                                Cliente.MenuClienteNuevo(sc, cliente);
+
+                            }
+                            case 2: {
+
+                                Conductor.MenuNuevoConductor(sc, conductores, vehiculos);
+                            }
+                            
+                            case 3:{
+                                sub_salir=true;
+                                break;  
+                            }
+
+                            default:
+                                System.out.println("Elija una opcion");
+                        }
+                        
+                    }while(elejir!=4);
+                    break;
+
                 }
-            
-            
+                case 3: 
+                    System.out.println("Gracias por visitarnos");
+                    break;
+                    
+                    
+                default:
+                    System.out.println("El programa solo tiene 3 opciones");
             }
+                
+        }while(eleccion != 3);
+        
+    }
+}
+
             
-        }while(eleccion!=3);
-        
-        
-        
-        
-        
-        
-        
-        
-            
-        }
-        else
-            
-        
         
     
-}
+        

@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class Taxi extends Servicio{
     private int numeroPersona;
 
-    public Taxi(int numeroPersona, int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, TipoPago tipopago) {
+    public Taxi( int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, int numeroPersona,TipoPago tipopago) {
         super(idServicio, ruta, fecha, hora, conductor, tipopago);
         this.numeroPersona = numeroPersona;
     }
@@ -42,9 +42,10 @@ public class Taxi extends Servicio{
             return numAle;
     }
     */
-    public static void ServicioTaxi(Scanner sc, String nomfile, ArrayList<Taxi> taxi){
+    public static Taxi ServicioTaxi(Scanner sc, String nomfile, ArrayList<Taxi> taxi, ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos){
         //String tp;
         System.out.println("****BIENVENIDO AL SERVICIO DE TAXI****");
+        int IDtaxi=Util.GenerarID("viajes.txt");
         System.out.println("**Ingrese la ruta**");
         System.out.println("Desde: ");
         String desde=sc.next();
@@ -61,9 +62,10 @@ public class Taxi extends Servicio{
         TipoPago TP=TipoPago.valueOf(tp);
         System.out.println("Numero de Personas que viajarán: ");
         int numPersonas=sc.nextInt();
-        System.out.println("El valor a pagar es: "+Taxi.valorPagar(TP));
-        int IDtaxi=Util.GenerarID(nomfile);
-        Taxi taxi=new Taxi(numPersonas,IDtaxi,r,LD,hora,,TP);
+        String nombreConductor=Conductor.EleccionConductor(conductores, vehiculos);
+        
+        //public Taxi( int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, int numeroPersona,TipoPago tipopago)
+        Taxi taxi=new Taxi(IDtaxi,r,LD,hora,,TP);
         System.out.println("Acepta el viaje? SI/NO");
         String respuesta=sc.next();
         if(respuesta.equals("SI")){
@@ -74,18 +76,7 @@ public class Taxi extends Servicio{
 
     }
     
-    public static String EleccionConductor(String nomfile){
-        ArrayList<String> nuevoArr=new ArrayList();
-        ArrayList<String> arreglo=Util.LeeFichero(nomfile);
-        for(String s: arreglo){
-            String[] datos=s.split(",");
-            if(datos[2].equals("D")){
-                nuevoArr.add(datos[3]);
-            }
-                
-            }
-        
-    }
+    
     
     public static void cambiarCaracterConductor(String nomfile){
         ArrayList<String> arreglo=Util.LeeFichero(nomfile);

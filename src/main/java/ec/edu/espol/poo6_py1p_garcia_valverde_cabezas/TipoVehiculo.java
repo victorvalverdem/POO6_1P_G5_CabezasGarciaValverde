@@ -10,5 +10,5 @@ package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
  * @author USER
  */
 public enum TipoVehiculo {
-    AUTO, MOTO;
+    A, M;
 }
