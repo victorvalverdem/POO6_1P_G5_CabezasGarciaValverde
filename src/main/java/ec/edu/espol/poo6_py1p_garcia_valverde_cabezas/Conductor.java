@@ -119,7 +119,7 @@ public class Conductor extends Usuario{
     
     
     public static void MenuNuevoConductor(Scanner sc, ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos){//ingresa un usuario al .txt
-        ArrayList<Conductor> cadena=new ArrayList<>();
+        //ArrayList<Conductor> cadena=new ArrayList<>();
         System.out.println("Ingrese numero de cedula: ");
         String numCedula=sc.next();
         System.out.println("Nombre: ");
@@ -159,7 +159,7 @@ public class Conductor extends Usuario{
             System.out.println("El Conductor ya existe");
         }
         else{
-            cadena.add(c);
+            //cadena.add(c);
             c.saveFileConductor("conductores.txt");
             c.saveFile("usuario.txt");
             System.out.println("Ingreso de Conductor Exitoso");
@@ -189,7 +189,7 @@ public class Conductor extends Usuario{
         
     }*/
     
-    public static String EleccionConductor(ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos){
+    public static String EleccionConductorAuto(ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos){
         ArrayList<String> conductor=new ArrayList();
         for(Conductor c: conductores){
             for(Vehiculo v: vehiculos){
@@ -203,6 +203,32 @@ public class Conductor extends Usuario{
         }
         String s=conductor.get(0);
         return s;
+    }
+    
+    public static String EleccionConductorMoto(ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos){
+        ArrayList<String> conductor=new ArrayList();
+        for(Conductor c: conductores){
+            for(Vehiculo v: vehiculos){
+                if((!conductor.contains(c.getNumeroCedula())) && (c.getEstado().equals(Estado.D)) ){
+                    if( (c.getCodVe()==v.getCodigoVehiculo()) && v.getTipoVeh().equals(TipoVehiculo.M)){
+                        conductor.add(c.getNombre());
+                    }
+                }
+            }
+            
+        }
+        String s=conductor.get(0);
+        return s;
+    }
+    
+    
+    public static Conductor ApartirdelNombre(ArrayList<Conductor> conductores, String nombreConductor){
+        for(Conductor c: conductores){
+            if(c.getNombre().equals(nombreConductor)){
+                return c;
+            }
+        }
+        return null;
     }
 
     @Override

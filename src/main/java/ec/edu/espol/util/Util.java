@@ -51,8 +51,8 @@ public class Util {
         return opcion;
     }
     
-    public static boolean ValidarUsuario(Scanner sc){
-        ArrayList<String> usuarios=Usuario.LeeFicheroUsuario("usuarios.txt");
+    public static boolean ValidarUsuario(Scanner sc, ArrayList<String> usuarios){
+        
         System.out.println("****************INICIO DE SESION******************");
         System.out.println("\n");
         System.out.println("Ingresar Usuario: ");
@@ -63,17 +63,21 @@ public class Util {
         for(String u: usuarios){
             String[] datos=u.split(",");
             if((datos[3].equals(user)) && (datos[4].equals(contrasena))){
-                System.out.println("Ingreso correctamente");
                 i=true;
-                //cedula,nombre,apellido,user,contrasena,celular,tipoUsuario
-                if()
+                //cedula,nombre,apellido,user,contrasena,celular,tipoUsuario   
             }
             else{
-                System.out.println("Datos incorrectos");
+                
                 i=false;
             }
         }
-        return i;
+        if(i==true){
+            System.out.println("Ingreso Correctamente");
+        }
+        else{
+            System.out.println("Datos Incorrectos");
+        }
+        return i;   
 
         
     }

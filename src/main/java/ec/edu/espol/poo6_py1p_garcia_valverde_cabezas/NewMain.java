@@ -44,9 +44,9 @@ public class NewMain {
             boolean sub_salir= false;
             switch (eleccion) {
                 case 1: {
-                    boolean validar = Util.ValidarUsuario(sc);
+                    boolean validar = Util.ValidarUsuario(sc,usuario);
                     do {
-                        Util.ValidarUsuario(sc);
+                        Util.ValidarUsuario(sc,usuario);
                     } while (validar == false);
                     if(validar==true){
                         
@@ -61,9 +61,37 @@ public class NewMain {
                         System.out.println("3. Regresar");
                         System.out.println("Elegir una opcion: ");
                         elejir = sc.nextInt();
-                        switch (elejir) {
+                        switch (elejir){ 
                             case 1: {
-                                Cliente.MenuClienteNuevo(sc, cliente);
+                                String nombreCliente=Cliente.MenuClienteNuevo(sc, cliente);
+                                int menuCli=Util.MenuCliente(sc);
+                                switch(menuCli){
+                                    case 1:{
+                                        String Respuesta = Taxi.ServicioTaxi(sc, conductores, vehiculos, nombreCliente);
+                                        if (Respuesta.equals("NO")) {
+                                            sub_salir = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    case 2:{
+                                        String resp=Delivery.ServicioDelivery(sc, conductores, vehiculos, nombreCliente);
+                                        if(resp.equals("NO")){
+                                            sub_salir =true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    case 3:{
+                                        String RespuestaEncomienda= EntregaEncomienda.ServicioEncomienda(sc, conductores, vehiculos, nombreCliente);
+                                        
+                                    
+                                    }
+                                        
+                                
+                                }
+                                
+                                
 
                             }
                             case 2: {
@@ -85,9 +113,10 @@ public class NewMain {
 
                 }
                 case 3: 
+                {
                     System.out.println("Gracias por visitarnos");
                     break;
-                    
+                } 
                     
                 default:
                     System.out.println("El programa solo tiene 3 opciones");

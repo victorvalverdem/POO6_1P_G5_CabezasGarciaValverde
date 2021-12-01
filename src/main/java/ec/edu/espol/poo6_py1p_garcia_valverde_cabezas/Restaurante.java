@@ -5,7 +5,10 @@
  */
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
+import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -16,11 +19,12 @@ public class Restaurante {
     private String nombreRestaurante;
     private ArrayList<Plato> menu;
 
-    public Restaurante(int codRestaurante, String nombreRestaurante, ArrayList<Plato> menu) {
+    public Restaurante(int codRestaurante, String nombreRestaurante) {
         this.codRestaurante = codRestaurante;
         this.nombreRestaurante = nombreRestaurante;
-        this.menu = menu;
     }
+    
+    
 
     public int getCodRestaurante() {
         return codRestaurante;
@@ -45,6 +49,32 @@ public class Restaurante {
     public void setMenu(ArrayList<Plato> menu) {
         this.menu = menu;
     }
+    
+    
+    public static ArrayList<Restaurante> readFileServiciotxt(String nomfile){
+        ArrayList<Restaurante> restaurante=new ArrayList<>();
+        try(Scanner sc=new Scanner(new File(nomfile))){
+            while(sc.hasNextLine()){
+                //linea = "091656,21,null"
+                
+                String linea=sc.nextLine();
+                
+                String[] tokens=linea.split(",");
+                Restaurante r=new Restaurante(Integer.parseInt(tokens[0]), tokens[1]);
+                restaurante.add(r);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
+        return restaurante;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurante{" + "codRestaurante=" + codRestaurante + ", nombreRestaurante=" + nombreRestaurante + ", menu=" + menu + '}';
+    }
+    
+    
     
     
     

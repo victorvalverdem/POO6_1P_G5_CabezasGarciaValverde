@@ -85,12 +85,10 @@ public class Cliente extends Usuario{
             System.out.println(ex.getMessage());;
         }
         return clientes;
-    }
+    } 
   
-    
-
-    public static void MenuClienteNuevo(Scanner sc, ArrayList<Cliente> clientes){//ingresa un usuario al .txt
-        ArrayList<Cliente> cadena=new ArrayList<>();
+    public static String MenuClienteNuevo(Scanner sc, ArrayList<Cliente> clientes){//ingresa un usuario al .txt
+        //ArrayList<Cliente> cadena=new ArrayList<>();
         System.out.println("Ingrese numero de cedula: ");
         String cedula=sc.next();
         System.out.println("Nombre: ");
@@ -133,11 +131,12 @@ public class Cliente extends Usuario{
         }
         }while(numerosdeCedulas.contains(cedula));
         if(!numerosdeCedulas.contains(cedula)){
-            cadena.add(c);
+            //cadena.add(c);
             c.saveFileCliente("clientes.txt");
             c.saveFile("usuario.txt");
             System.out.println("Ingreso de Cliente Exitoso");
         }
+        return nombre;
     }
     
     

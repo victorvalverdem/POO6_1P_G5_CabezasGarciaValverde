@@ -6,6 +6,9 @@
 package ec.edu.espol.poo6_py1p_garcia_valverde_cabezas;
 
 import ec.edu.espol.util.Util;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,10 +19,12 @@ import java.util.Scanner;
  */
 public class Taxi extends Servicio{
     private int numeroPersona;
+    private double valorApagar;
 
-    public Taxi( int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, int numeroPersona,TipoPago tipopago) {
+    public Taxi( int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, int numeroPersona,TipoPago tipopago, double valorApagar) {
         super(idServicio, ruta, fecha, hora, conductor, tipopago);
         this.numeroPersona = numeroPersona;
+        this.valorApagar=valorApagar;
     }
 
     public int getNumeroPersona() {
@@ -28,6 +33,14 @@ public class Taxi extends Servicio{
 
     public void setNumeroPersona(int numeroPersona) {
         this.numeroPersona = numeroPersona;
+    }
+
+    public double getValorApagar() {
+        return valorApagar;
+    }
+
+    public void setValorApagar(double valorApagar) {
+        this.valorApagar = valorApagar;
     }
     
     // Método de cálculo servicio debe ir en el padre, porwue se hereda a los servicios hijos
@@ -42,7 +55,39 @@ public class Taxi extends Servicio{
             return numAle;
     }
     */
-    public static Taxi ServicioTaxi(Scanner sc, String nomfile, ArrayList<Taxi> taxi, ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos){
+    
+    public void saveFileServicio(String nomfile, String nombreCliente, String nombreConductor){
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(new File(nomfile),true)))
+        {
+            pw.println(idServicio+","+nombreCliente+","+nombreConductor+","+super.ruta.getOrigen()+","+super.ruta.getDestino()+","+super.getFecha()+","+super.getHora()+","+this.numeroPersona+","+super.tipopago+","+this.valorApagar);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public static ArrayList<Servicio> readFileServiciotxt(String nomfile, Conductor c){
+        ArrayList<Servicio> servicio = new ArrayList<>();
+        try(Scanner sc=new Scanner(new File(nomfile))){
+            while(sc.hasNextLine()){
+                //linea = "091656,21,null"
+                String linea=sc.nextLine();
+                
+                String[] tokens=linea.split(",");
+                String rutaIn=tokens[3];
+                String rutaF=tokens[4];
+                Ruta r=new Ruta(rutaIn, rutaF);
+                LocalDate Fecha=LocalDate.parse(tokens[5]);
+                TipoPago tp=TipoPago.valueOf(tokens[8]);
+                //( int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, int numeroPersona,TipoPago tipopago, double valorApagar
+                Servicio s=new Taxi(Integer.parseInt(tokens[0]),r,Fecha,tokens[3],c,Integer.parseInt(tokens[7]),tp,Double.parseDouble(tokens[9]));
+                servicio.add(s);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
+        return servicio;
+    }
+    public static String ServicioTaxi(Scanner sc, ArrayList<Conductor> conductores, ArrayList<Vehiculo> vehiculos, String nombreCliente){
         //String tp;
         System.out.println("****BIENVENIDO AL SERVICIO DE TAXI****");
         int IDtaxi=Util.GenerarID("viajes.txt");
@@ -62,18 +107,21 @@ public class Taxi extends Servicio{
         TipoPago TP=TipoPago.valueOf(tp);
         System.out.println("Numero de Personas que viajarán: ");
         int numPersonas=sc.nextInt();
-        String nombreConductor=Conductor.EleccionConductor(conductores, vehiculos);
+        String nombreConductor=Conductor.EleccionConductorAuto(conductores, vehiculos);
+        Conductor cond=Conductor.ApartirdelNombre(conductores, nombreConductor);
+        Double Valorp= valorPagar(TP);
         
         //public Taxi( int idServicio, Ruta ruta, LocalDate fecha, String hora, Conductor conductor, int numeroPersona,TipoPago tipopago)
-        Taxi taxi=new Taxi(IDtaxi,r,LD,hora,,TP);
+        Taxi t=new Taxi(IDtaxi,r,LD,hora,cond, numPersonas,TP, Valorp);
         System.out.println("Acepta el viaje? SI/NO");
         String respuesta=sc.next();
         if(respuesta.equals("SI")){
-            ArrayList<String> arreglo=Util.LeeFichero("conductores.txt");
-            
+            t.saveFileServicio("viajes.txt", nombreCliente, nombreConductor); 
+            return "SI";
         }
-        
-
+        else{
+            return "NO";
+        }
     }
     
     
@@ -91,8 +139,9 @@ public class Taxi extends Servicio{
 
     @Override
     public String toString() {
-        return super.idServicio+"d";
+        return "Taxi{" + "numeroPersona=" + numeroPersona + ", valorApagar=" + valorApagar + '}';
     }
+    
     
     
     
